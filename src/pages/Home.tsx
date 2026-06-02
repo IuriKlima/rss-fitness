@@ -15,7 +15,7 @@ export const Home = () => {
   const settings = useSettingsStore(state => state.settings);
   useEffect(() => {
     getProducts().then(products => {
-      setFeaturedProducts(products.slice(0, 8));
+      setFeaturedProducts(products.sort(() => 0.5 - Math.random()).slice(0, 8));
     });
     getCategories().then(setCategories);
   }, []);
