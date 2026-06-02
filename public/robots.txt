@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /*?category=*
+Disallow: /*?subcategory=*
+
+Sitemap: https://seu-dominio.com.br/sitemap.xml
