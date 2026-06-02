@@ -16,6 +16,10 @@ export const Footer = () => {
   const settings = useSettingsStore(state => state.settings);
   const [logoError, setLogoError] = useState(false);
 
+  useEffect(() => {
+    setLogoError(false);
+  }, [settings.logo_url]);
+
   return (
     <footer className="bg-primary text-white py-12 border-t border-gray-800">
       <div className="container mx-auto px-4 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">

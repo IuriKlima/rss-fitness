@@ -17,6 +17,10 @@ export const Navbar = () => {
   const settings = useSettingsStore(state => state.settings);
 
   useEffect(() => {
+    setLogoError(false);
+  }, [settings.logo_url]);
+
+  useEffect(() => {
     getCategories().then(setCategories).catch(console.error);
     getProducts().then(setProducts).catch(console.error);
   }, []);

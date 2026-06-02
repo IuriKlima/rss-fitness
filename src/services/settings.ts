@@ -18,7 +18,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   company_name: 'Rss Fitness',
   whatsapp_number: '5521964692374',
   email: 'contato@rssfitness.com.br',
-  logo_url: '/logo.png',
+  logo_url: '',
   hero_title: 'Equipamentos Premium para o seu Treino.',
   hero_subtitle: 'Descubra a linha completa de equipamentos de alta performance Rss Fitness. Durabilidade, tecnologia e design para quem leva o treino a sério.',
   about_text: 'A Rss Fitness nasceu com a missão de transformar a experiência de treinos no Brasil, oferecendo equipamentos de qualidade comercial para academias e residências...',

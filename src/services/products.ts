@@ -21,7 +21,7 @@ export const getProducts = async (): Promise<Product[]> => {
   if (error) throw error;
   return (data as Product[]).map(p => ({
     ...p,
-    slug: generateSlug(p.title)
+    slug: `${generateSlug(p.title)}-${generateSlug(p.sku)}`
   }));
 };
 
