@@ -10,6 +10,7 @@ import type { Product } from '../../services/products';
 
 export const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [logoError, setLogoError] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const { items, toggleCart } = useCartStore();
@@ -28,8 +29,13 @@ export const Navbar = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            {settings.logo_url ? (
-              <img src={settings.logo_url} alt={settings.company_name} className="h-16 md:h-20 object-contain" />
+            {settings.logo_url && !logoError ? (
+              <img 
+                src={settings.logo_url} 
+                alt={settings.company_name} 
+                className="h-16 md:h-20 object-contain" 
+                onError={() => setLogoError(true)}
+              />
             ) : (
               <>
                 <Dumbbell className="h-8 w-8 text-accent" />

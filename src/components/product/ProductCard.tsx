@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { useCartStore } from '../../store/cartStore';
 import type { Product } from '../../services/products';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Dumbbell } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -8,16 +9,22 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product }: ProductCardProps) => {
   const addItem = useCartStore(state => state.addItem);
+  const [imgError, setImgError] = useState(false);
 
   return (
     <div className="bg-white border rounded-xl overflow-hidden hover:shadow-xl transition-shadow group flex flex-col h-full">
-      <div className="relative aspect-square overflow-hidden bg-gray-100 p-2 md:p-4">
-        <img 
-          src={product.imageUrl} 
-          alt={product.title}
-          className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
-          loading="lazy"
-        />
+      <div className="relative aspect-square overflow-hidden bg-gray-100 flex items-center justify-center">
+        {imgError || !product.imageUrl ? (
+          <Dumbbell className="h-16 w-16 text-gray-300" />
+        ) : (
+          <img 
+            src={product.imageUrl} 
+            alt={product.title}
+            onError={() => setImgError(true)}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        )}
         <div className="absolute top-2 left-2 md:top-3 md:left-3 bg-primary text-white text-[10px] md:text-xs font-bold px-2 py-0.5 md:px-3 md:py-1 rounded-full uppercase tracking-wider">
           {product.category}
         </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, ShoppingCart, Check, Info } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Check, Info, Dumbbell } from 'lucide-react';
 import { getProducts } from '../services/products';
 import type { Product } from '../services/products';
 import { useCartStore } from '../store/cartStore';
@@ -14,6 +14,7 @@ export const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const addItem = useCartStore(state => state.addItem);
   const [added, setAdded] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -101,12 +102,17 @@ export const ProductDetails = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
         {/* Image Gallery */}
-        <div className="bg-white rounded-2xl overflow-hidden border aspect-square flex items-center justify-center">
-          <img 
-            src={product.imageUrl} 
-            alt={product.title} 
-            className="w-full h-full object-cover"
-          />
+        <div className="bg-gray-100 rounded-2xl overflow-hidden border aspect-square flex items-center justify-center">
+          {imgError || !product.imageUrl ? (
+            <Dumbbell className="h-32 w-32 text-gray-300" />
+          ) : (
+            <img 
+              src={product.imageUrl} 
+              alt={product.title} 
+              onError={() => setImgError(true)}
+              className="w-full h-full object-cover"
+            />
+          )}
         </div>
 
         {/* Product Info */}

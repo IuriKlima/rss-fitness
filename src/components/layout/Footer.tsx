@@ -1,5 +1,6 @@
 import { Dumbbell } from 'lucide-react';
 import { useSettingsStore } from '../../store/settingsStore';
+import { useState } from 'react';
 
 const formatPhone = (num: string) => {
   if (!num) return '';
@@ -13,14 +14,20 @@ const formatPhone = (num: string) => {
 
 export const Footer = () => {
   const settings = useSettingsStore(state => state.settings);
+  const [logoError, setLogoError] = useState(false);
 
   return (
     <footer className="bg-primary text-white py-12 border-t border-gray-800">
       <div className="container mx-auto px-4 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="md:col-span-1">
           <div className="flex items-center gap-2 mb-4">
-            {settings.logo_url ? (
-              <img src={settings.logo_url} alt={settings.company_name} className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity" />
+            {settings.logo_url && !logoError ? (
+              <img 
+                src={settings.logo_url} 
+                alt={settings.company_name} 
+                className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity" 
+                onError={() => setLogoError(true)}
+              />
             ) : (
               <>
                 <Dumbbell className="h-6 w-6 text-accent" />
