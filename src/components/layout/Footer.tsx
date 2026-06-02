@@ -1,6 +1,6 @@
 import { Dumbbell } from 'lucide-react';
 import { useSettingsStore } from '../../store/settingsStore';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const formatPhone = (num: string) => {
   if (!num) return '';
