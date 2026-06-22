@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Search, Filter, SlidersHorizontal } from 'lucide-react';
 import { getProducts } from '../services/products';
@@ -21,6 +21,26 @@ export const Catalog = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState(initialCategory);
   const [subcategory, setSubcategory] = useState(initialSubcategory);
+  const [visibleCount, setVisibleCount] = useState(12);
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    setVisibleCount(12);
+  }, [search, category, subcategory]);
+
+  const observer = useRef<IntersectionObserver | null>(null);
+  const lastElementRef = useCallback((node: HTMLDivElement) => {
+    if (loading) return;
+    if (observer.current) observer.current.disconnect();
+    
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        setVisibleCount(prev => prev + 12);
+      }
+    }, { rootMargin: '100px' });
+    
+    if (node) observer.current.observe(node);
+  }, [loading]);
 
   useEffect(() => {
     setCategory(searchParams.get('category') || '');
@@ -140,13 +160,21 @@ export const Catalog = () => {
               <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-accent"></div>
             </div>
           ) : filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {filteredProducts.map(product => (
-                <Link to={`/produto/${product.slug}`} key={product.id} className="block h-full">
-                  <ProductCard product={product} />
-                </Link>
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                {filteredProducts.slice(0, visibleCount).map(product => (
+                  <Link to={`/produto/${product.slug}`} key={product.id} className="block h-full">
+                    <ProductCard product={product} />
+                  </Link>
+                ))}
+              </div>
+              
+              {visibleCount < filteredProducts.length && (
+                <div ref={lastElementRef} className="w-full h-16 flex items-center justify-center mt-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-2 border-gray-300 border-t-accent"></div>
+                </div>
+              )}
+            </>
           ) : (
             <div className="bg-white border rounded-xl p-12 text-center">
               <Filter className="h-12 w-12 text-gray-300 mx-auto mb-4" />
